@@ -23,7 +23,7 @@ module TT::Plugins::SimpleInstaller
   # Plugin information
   PLUGIN_ID       = 'TT_SimpleInstaller'.freeze
   PLUGIN_NAME     = 'Simple Installer'.freeze
-  PLUGIN_VERSION  = '1.0.1'.freeze
+  PLUGIN_VERSION  = '1.0.2'.freeze
   
   
   ### MENU & TOOLBARS ### ------------------------------------------------------
@@ -47,7 +47,7 @@ module TT::Plugins::SimpleInstaller
       :name => PLUGIN_NAME,
       :author => 'thomthom',
       :version => PLUGIN_VERSION.to_s,
-      :date => '02 Jan 12',
+      :date => '09 Feb 12',
       :description => 'Adds menu items for easy installation of RBZ or ZIP packaged plugins.',
       :link_info => 'http://forums.sketchucation.com/viewtopic.php?f=323&t=42315'
     }
@@ -111,6 +111,8 @@ module TT::Plugins::SimpleInstaller
     rescue Exception => error
       UI.messagebox "Error during installation. Could not write destination file.\nError: #{error}"
     end
+    # Load the plugin.
+    load new_file
   end
   
   
