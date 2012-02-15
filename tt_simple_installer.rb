@@ -23,7 +23,7 @@ module TT::Plugins::SimpleInstaller
   # Plugin information
   PLUGIN_ID       = 'TT_SimpleInstaller'.freeze
   PLUGIN_NAME     = 'Simple Installer'.freeze
-  PLUGIN_VERSION  = '1.0.2'.freeze
+  PLUGIN_VERSION  = '1.0.3'.freeze
   
   
   ### MENU & TOOLBARS ### ------------------------------------------------------
@@ -34,7 +34,8 @@ module TT::Plugins::SimpleInstaller
     m = menu.add_submenu( 'Install' )
     m.add_item( 'ZIP Package' ) { self.install_package( false ) }
     m.add_item( 'RBZ Package' ) { self.install_package }
-    m.add_item( 'RB File' ) { self.install_rb }
+    m.add_item( 'RB File' )     { self.install_file( 'rb' ) }
+    m.add_item( 'RBS File' )    { self.install_file( 'rbs' ) }
     m.add_separator
     m.add_item( 'Open Extension Manager' ) { self.open_extension_manager }
   end 
@@ -74,9 +75,9 @@ module TT::Plugins::SimpleInstaller
   end
   
   
-  # @since 1.0.0
-  def self.install_rb
-    file = UI.openpanel( 'Install Plugin', nil, '*.rb' )
+  # @since 1.0.3
+  def self.install_file( format = 'rb' )
+    file = UI.openpanel( 'Install Plugin', nil, "*.#{format}" )
     return if file.nil?
     destination = Sketchup.find_support_file( 'Plugins' )
     filename = File.basename( file )
@@ -101,7 +102,7 @@ module TT::Plugins::SimpleInstaller
         file_content = io.read
       }
     rescue Exception => error
-      UI.messagebox "Error during installation. Could not read source file.\nError: #{error}"
+      UI.messagebox( "Error during installation. Could not read source file.\nError: #{error}" )
     end
     # Write destination
     begin
@@ -109,10 +110,14 @@ module TT::Plugins::SimpleInstaller
         io.write( file_content )
       }
     rescue Exception => error
-      UI.messagebox "Error during installation. Could not write destination file.\nError: #{error}"
+      UI.messagebox( "Error during installation. Could not write destination file.\nError: #{error}" )
     end
     # Load the plugin.
-    load new_file
+    begin
+      Sketchup::require( new_file )
+    rescue
+      UI.messagebox( "Error during installation. Could not load plugin.\nError: #{error}" )
+    end
   end
   
   
