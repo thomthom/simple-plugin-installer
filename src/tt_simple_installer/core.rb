@@ -10,25 +10,18 @@ require 'sketchup.rb'
 #-------------------------------------------------------------------------------
 
 
-module TT;end
-module TT::Plugins;end
 module TT::Plugins::SimpleInstaller
-  
-  
+
+
   ### CONSTANTS ### ------------------------------------------------------------
-  
-  # Plugin information
-  PLUGIN_ID       = 'TT_SimpleInstaller'.freeze
-  PLUGIN_NAME     = 'Simple Installer'.freeze
-  PLUGIN_VERSION  = '1.1.0'.freeze
-  
+
   # @since 1.1.0
   PLATFORM_IS_OSX     = (Object::RUBY_PLATFORM =~ /darwin/i) ? true : false
   PLATFORM_IS_WINDOWS = !PLATFORM_IS_OSX
-  
-  
+
+
   ### MENU & TOOLBARS ### ------------------------------------------------------
-  
+
   unless file_loaded?( __FILE__ )
     # Menus
     menu = UI.menu( 'Plugins' )
@@ -39,25 +32,11 @@ module TT::Plugins::SimpleInstaller
     m.add_item( 'RBS File' )    { self.install_file( 'rbs' ) }
     m.add_separator
     m.add_item( 'Open Extension Manager' ) { self.open_extension_manager }
-  end 
-  
-  
-  ### LIB FREDO UPDATER ### ----------------------------------------------------
-  
-  def self.register_plugin_for_LibFredo6
-    {   
-      :name => PLUGIN_NAME,
-      :author => 'thomthom',
-      :version => PLUGIN_VERSION.to_s,
-      :date => '03 Dec 12',
-      :description => 'Adds menu items for easy installation of RBZ or ZIP packaged plugins.',
-      :link_info => 'http://sketchucation.com/forums/viewtopic.php?f=323&t=42315'
-    }
   end
-  
-  
+
+
   ### MAIN SCRIPT ### ----------------------------------------------------------
-  
+
   # @param [Boolean] rbz True for RBZ packages, false for ZIP.
   #
   # @since 1.0.0
@@ -74,8 +53,8 @@ module TT::Plugins::SimpleInstaller
       UI.messagebox "Error during installation: #{error}"
     end
   end
-  
-  
+
+
   # @since 1.0.3
   def self.install_file( format = 'rb' )
     file = UI.openpanel( 'Install Plugin', nil, "*.#{format}" )
@@ -133,15 +112,15 @@ module TT::Plugins::SimpleInstaller
       end
     end
   end
-  
-  
+
+
   # @return [String]
   # @since 1.0.0
   def self.open_extension_manager
     UI.show_preferences( 'Extensions' )
   end
-  
-  
+
+
   # @return [String]
   # @since 1.1.0
   def self.is_virtualized?( file )
@@ -152,8 +131,8 @@ module TT::Plugins::SimpleInstaller
       false
     end
   end
-  
-  
+
+
   # @return [String]
   # @since 1.1.0
   def self.get_virtual_path( file )
@@ -173,9 +152,9 @@ module TT::Plugins::SimpleInstaller
     end
   end
 
-  
+
   ### DEBUG ### ----------------------------------------------------------------
-  
+
   # @note Debug method to reload the plugin.
   #
   # @example
